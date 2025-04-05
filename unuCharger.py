@@ -113,7 +113,7 @@ class AutoCharger(AbstractCharger):
 
         super().__init__(AIN, fritzCon)
 
-        self.chargers = sorted(chargers, key=lambda c: c.startPowerMW)
+        self.chargers = sorted(chargers, key=lambda c: -c.startPowerMW)
         self.currentCharger = None
         self.averagePoolSize = averagePoolSize
         self.reads: List[int] = []
@@ -121,6 +121,10 @@ class AutoCharger(AbstractCharger):
     def evaluate(self):
         if not self.currentCharger:
             self.currentCharger = self.detectCharger()
+            if self.currentCharger:
+                return Charger.CHARGING
+            else:
+                return Charger.NOT_CHARGING
 
         elif self.currentCharger:
             ret = self.currentCharger.evaluate()
@@ -154,6 +158,29 @@ class AutoCharger(AbstractCharger):
         return None
 
 
+def createCharger(fc:FritzConnection, json:Dict[str,Any])->Charger:
+    AIN = json["AIN"]
+    name = json["name"]
+    triggerPowerMW = int(json["triggerPowerW"] * 1000)
+    averagePoolSize = json["averagePoolSize"]
+    startPower = int(json.get("startPowerW","0") * 1000)
+    log = json.get("log",False)
+
+    return Charger(name, AIN, fc, triggerPowerMW, averagePoolSize, startPower, log)
+
+
+def createAutoCharger(fc:FritzConnection, json:Dict[str,Any]):
+    AIN = json["AIN"]
+    averagePoolSize =  json["averagePoolSize"]
+    chrgrs = []
+    for c in json["Charger"]:
+        c["AIN"] = AIN
+        chrgrs.append(createCharger(fc, c))
+
+    return AutoCharger(chrgrs, averagePoolSize)
+
+
+
 #######################################################
 if __name__ == "__main__":
 
@@ -176,33 +203,11 @@ if __name__ == "__main__":
     chargerByAIN:Dict[str,Charger] = {}
 
 
-    def createCharger(json:Dict[str,Any])->Charger:
-        AIN = json["AIN"]
-        name = json["name"]
-        triggerPowerMW = int(json["triggerPowerW"] * 1000)
-        averagePoolSize = json["averagePoolSize"]
-        startPower = int(json.get("startPowerMW","0") * 1000)
-        log = json.get("log",False)
-
-        return Charger(name, AIN, fc, triggerPowerMW, averagePoolSize, startPower, log)
-
-
-    def createAutoCharger(json):
-        AIN = json["AIN"]
-        averagePoolSize =  json["averagePoolSize"]
-        chrgrs = []
-        for c in json["Charger"]:
-            c["AIN"] = AIN
-            chrgrs.append(createCharger(c))
-
-        return AutoCharger(chrgrs, averagePoolSize)
-
-
     for json in settings["Charger"]:
         if "Charger" not in json:
-            batMonitors.append(createCharger(json))
+            batMonitors.append(createCharger(fc, json))
         else:
-            batMonitors.append(createAutoCharger(json))
+            batMonitors.append(createAutoCharger(fc, json))
 
     while True:
         for bl in batMonitors:
