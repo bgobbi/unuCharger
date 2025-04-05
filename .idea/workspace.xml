@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="MagicMock">
-      <change afterPath="$PROJECT_DIR$/test/testSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testAutoCharger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/testUnuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/testUnuCharger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/unuCharger.py" afterDir="false" />
-    </list>
+    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Fixed AutoDetect did not work correctly due to sorting direction error&#10;Implemented testAutoCharger" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -141,7 +135,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742999663873</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fixed AutoDetect did not work correctly due to sorting direction error&#10;Implemented testAutoCharger">
+      <option name="closed" value="true" />
+      <created>1743885669785</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743885669785</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -158,7 +160,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="New pycharm" />
     <MESSAGE value="MagicMock" />
-    <option name="LAST_COMMIT_MESSAGE" value="MagicMock" />
+    <MESSAGE value="Fixed AutoDetect did not work correctly due to sorting direction error&#10;Implemented testAutoCharger" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed AutoDetect did not work correctly due to sorting direction error&#10;Implemented testAutoCharger" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -180,8 +183,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/testAutoCharger.py</url>
-          <line>41</line>
-          <option name="timeStamp" value="25" />
+          <line>40</line>
+          <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
