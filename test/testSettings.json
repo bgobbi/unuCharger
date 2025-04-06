@@ -1,0 +1,53 @@
+{
+  "fritzIP": "192.168.1.1",
+  "user": "myUser",
+  "passWD": "MyPassword",
+  "frequencyS": 30,
+
+  "Charger": [
+
+    { "name": "unu",
+      "AIN": "MyAIN",
+      "triggerPowerW": 260,
+      "averagePoolSize": 5,
+      "log": true
+    },
+
+    { "AIN": "MyAIN2",
+      "averagePoolSize": 3,
+
+      "Charger": [
+        { "name": "Calvin",
+          "startPowerW": 15,
+          "triggerPowerW": 13,
+          "averagePoolSize": 3,
+          "log": true
+        },
+        { "name": "OnePlus3",
+          "startPowerW": 10,
+          "triggerPowerW": 7,
+          "averagePoolSize": 3,
+          "log": true
+        },
+        { "name": "Moto",
+          "startPowerW": 8.5,
+          "triggerPowerW": 8.4,
+          "averagePoolSize": 120, "rem": "Just time based because no deminuisching of power observed",
+          "log": true
+        },
+        { "name": "ATT",
+          "startPowerW": 5,
+          "triggerPowerW": 5,
+          "averagePoolSize": 3,
+          "log": true
+        },
+        { "name": "AG SoundCore",
+          "startPowerW": 2.3,
+          "triggerPowerW": 1.8,
+          "averagePoolSize": 3,
+          "log": true
+        }
+      ]
+    }
+  ]
+}
