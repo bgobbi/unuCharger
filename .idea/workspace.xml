@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Fixed AutoDetect did not work correctly due to sorting direction error&#10;Implemented testAutoCharger" />
+    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Fixed AutoDetect did not work correctly due to sorting direction error&#10;Implemented testAutoCharger">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/testUnuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/testUnuCharger.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,6 +51,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\agobbi\dev\unuCharger\test" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\agobbi\dev\unuCharger\test" />
+    </key>
   </component>
   <component name="RunManager" selected="Python tests.Python tests in testAutoCharger.py">
     <configuration name="Python tests in testAutoCharger.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
@@ -61,7 +67,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/testAutoCharger.py&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/testAutoCharger.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
@@ -143,7 +149,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743885669785</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Fixed AutoDetect did not work correctly due to sorting direction error&#10;Implemented testAutoCharger">
+      <option name="closed" value="true" />
+      <created>1743885824517</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1743885824517</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -177,12 +191,12 @@
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/testAutoCharger.py</url>
+          <url>file://$PROJECT_DIR$/test/testAutoCharger.py</url>
           <line>52</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/testAutoCharger.py</url>
+          <url>file://$PROJECT_DIR$/test/testAutoCharger.py</url>
           <line>40</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>

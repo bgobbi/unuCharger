@@ -146,9 +146,9 @@ class AutoCharger(AbstractCharger):
         if len(self.reads) < self.averagePoolSize:
             return None
 
-        pAverage = statistics.mean(self.reads)
+        pMedian = statistics.median(self.reads)
         for c in self.chargers:
-            if pAverage > c.startPowerMW:
+            if pMedian > c.startPowerMW:
                 warn(f"Start Loading {c.name}")
                 return c
 

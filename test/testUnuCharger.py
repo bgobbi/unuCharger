@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from mock.mock import MagicMock
-from typing import List
-import mock
 import unittest
-from unuCharger import Charger
 
+import mock
+from mock.mock import MagicMock
+
+from unuCharger import Charger
 
 
 class unuChargerTestCase(unittest.TestCase):
