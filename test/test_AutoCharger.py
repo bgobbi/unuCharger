@@ -7,11 +7,11 @@ import unuCharger
 from unuCharger import createAutoCharger
 
 
-class AutoLoaderTest(unittest.TestCase):
+class TestAutoLoader(unittest.TestCase):
     @mock.patch('unuCharger.FritzConnection')
     def __init__(self, name, fc):
         super().__init__(name)
-        setFile = "test/testSettings.json"
+        setFile = "testSettings.json"
 
         with open(setFile) as sFile:
             settings = json.load(sFile)
@@ -20,7 +20,7 @@ class AutoLoaderTest(unittest.TestCase):
         self.ACharger = createAutoCharger(fc, settings['Charger'][1])
 
 
-    def test_AutoLoader(self):
+    def testAutoLoader(self):
         mockgetContAC = MagicMock(side_effect=[0, 25030, 25030, 25030, 0, 0,
                                              2430, 2430, 2430, 2430, ])
         mockgetContCalvin = MagicMock(side_effect=[10580, 10580, 10580, 0 ])

@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Fixed AutoDetect did not work correctly due to sorting direction error&#10;Implemented testAutoCharger">
-      <change afterPath="$PROJECT_DIR$/test/testCharger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Implemented UnuCharger that detects differences in pool relative to max">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/testSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/test/testSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/testUnuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/testUnuCharger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/unuCharger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/testAutoCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/TestAutoCharger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/testCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/TestCharger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/testUnuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/TestUnuCharger.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +42,7 @@
     "Python tests.Python tests in test.executor": "Run",
     "Python tests.Python tests in testAutoCharger.py.executor": "Run",
     "Python tests.Python tests in testCharger.py.executor": "Run",
-    "Python tests.Python tests in testUnuCharger.py.executor": "Debug",
+    "Python tests.Python tests in testUnuCharger.py.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -61,7 +59,37 @@
       <recent name="C:\Users\agobbi\dev\unuCharger\test" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Python tests in testAutoCharger.py">
+  <component name="RunManager" selected="Python tests.Python tests in test">
+    <configuration name="Python tests in TestCharger.py" type="tests" factoryName="Autodetect" nameIsGenerated="true">
+      <module name="unuCharger" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/TestCharger.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests in TestUnuCharger.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="unuCharger" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/TestUnuCharger.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
     <configuration name="Python tests in test" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="unuCharger" />
       <option name="ENV_FILES" value="" />
@@ -92,36 +120,6 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests in testCharger.py" type="tests" factoryName="Autodetect" nameIsGenerated="true">
-      <module name="unuCharger" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/testCharger.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Python tests in testUnuCharger.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="unuCharger" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/testUnuCharger.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
     <configuration default="true" type="tests" factoryName="py.test">
       <module name="unuCharger" />
       <option name="ENV_FILES" value="" />
@@ -141,9 +139,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Python tests in testAutoCharger.py" />
-        <item itemvalue="Python tests.Python tests in testUnuCharger.py" />
         <item itemvalue="Python tests.Python tests in test" />
+        <item itemvalue="Python tests.Python tests in TestUnuCharger.py" />
+        <item itemvalue="Python tests.Python tests in testAutoCharger.py" />
       </list>
     </recent_temporary>
   </component>
@@ -211,7 +209,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743952473931</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Implemented UnuCharger that detects differences in pool relative to max">
+      <option name="closed" value="true" />
+      <created>1744277817419</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1744277817419</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -283,7 +289,8 @@
     <MESSAGE value="MagicMock" />
     <MESSAGE value="More tolerant autodetect using median instead of mean" />
     <MESSAGE value="Fixed AutoDetect did not work correctly due to sorting direction error&#10;Implemented testAutoCharger" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed AutoDetect did not work correctly due to sorting direction error&#10;Implemented testAutoCharger" />
+    <MESSAGE value="Implemented UnuCharger that detects differences in pool relative to max" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented UnuCharger that detects differences in pool relative to max" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -294,12 +301,12 @@
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/testAutoCharger.py</url>
+          <url>file://$PROJECT_DIR$/test/TestAutoCharger.py</url>
           <line>52</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/testAutoCharger.py</url>
+          <url>file://$PROJECT_DIR$/test/TestAutoCharger.py</url>
           <line>40</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>

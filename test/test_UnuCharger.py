@@ -11,7 +11,7 @@ from unuCharger import createCharger
 
 
 
-class unuChargerTestCase(unittest.TestCase):
+class TestUnuCharger(unittest.TestCase):
 
     @mock.patch('unuCharger.FritzConnection')
     def test_UC(self, fc):
@@ -27,11 +27,14 @@ class unuChargerTestCase(unittest.TestCase):
             316710, 316710, 315780, 315780, 315780, 315780, 316070, 316070, 316070, 315990,
             315990, 305120, 305120, 294610, 294610, 0, 0]
         mockgetCont = MagicMock(side_effect=powerSeq)
+        uc._execGetContent = mockgetCont
 
         expectedStatus = [unuCharger.Charger.CHARGING] * 24
         expectedStatus.append(unuCharger.Charger.CHARGED)
         expectedStatus.append(unuCharger.Charger.NOT_CHARGING)
 
-        uc._execGetContent = mockgetCont
         for i, eStatus in enumerate(expectedStatus):
-            self.assertEqual(eStatus, uc.evaluate(), f"Failed on {i}")
+            self.assertEqual(eStatus, uc.evaluate(), f"Failed on input {i}")
+
+if __name__ == '__main__':
+    unittest.main()
