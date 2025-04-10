@@ -38,12 +38,12 @@ class AbstractCharger:
 
 class Charger(AbstractCharger):
 
-    def __init__(self, name:str, AIN:str, fritzCon:Any, triggerPowerMW:int, averagePoolSize:int = 3,
+    def __init__(self, name:str, AIN:str, fritzCon:Any, triggerPowerMW:int, statsPoolSize:int = 3,
                        startPowerMW=0, log=False):
         super().__init__(AIN, fritzCon)
         self.name = name
         self.triggerPowerMW = triggerPowerMW
-        self.averagePoolSize = averagePoolSize
+        self.statsPoolSize = statsPoolSize
         self.reads:List[int] = []
         self.startPowerMW = startPowerMW   # only needed for AutoChargers
         self.startTime = time.time()
@@ -59,7 +59,7 @@ class Charger(AbstractCharger):
         warn(f"Batterie monitor created for {name} triggering at {triggerPowerMW/1000:.2f}")
 
     def evaluate(self):
-        if len(self.reads) >= self.averagePoolSize:
+        if len(self.reads) >= self.statsPoolSize and len(self.reads) > 0:
             self.reads.pop(0)
         power = self._execGetContent("getswitchpower")
         if self.logFile and self.status == self.CHARGING:
@@ -71,10 +71,10 @@ class Charger(AbstractCharger):
             self.reads = list(filter(lambda v: v > 10, self.reads))
         self.reads.append(power)
 
-        pAverage = statistics.mean(self.reads)
+        pMedian = statistics.median(self.reads)
 
-        if len(self.reads) < self.averagePoolSize:
-            if pAverage < 10:
+        if len(self.reads) < self.statsPoolSize:
+            if pMedian < 10:
                 self.status = self.NOT_CHARGING
             else:
                 if not self.status == self.CHARGING:
@@ -87,9 +87,9 @@ class Charger(AbstractCharger):
             self.status = self.CHARGING
 
         # switch off if power threshold is reached
-        if pAverage <= self.triggerPowerMW:
+        if pMedian <= self.triggerPowerMW:
             self._execGetContent("setswitchoff")
-            #warn(f"{self.name}: {self.reads}")
+            print(f"Charged: {self.name}: {self.reads}",file=self.logFile)
             self.reads = []
 
             self.status = self.CHARGED
@@ -103,7 +103,7 @@ class AutoCharger(AbstractCharger):
     The charger with the highest Power that iss below StartPowerW.
 
     """
-    def __init__(self, chargers:List[Charger], averagePoolSize:int = 3):
+    def __init__(self, chargers:List[Charger], statsPoolSize:int = 3):
         AIN = chargers[0].AIN
         fritzCon = chargers[0].fritzCon
 
@@ -115,7 +115,7 @@ class AutoCharger(AbstractCharger):
 
         self.chargers = sorted(chargers, key=lambda c: -c.startPowerMW)
         self.currentCharger = None
-        self.averagePoolSize = averagePoolSize
+        self.statsPoolSize = statsPoolSize
         self.reads: List[int] = []
 
     def evaluate(self):
@@ -138,12 +138,12 @@ class AutoCharger(AbstractCharger):
     def detectCharger(self):
         # filter out low values from disconnected time to compute average correctly
         self.reads = list(filter(lambda v: v > 10, self.reads))
-        if len(self.reads) >= self.averagePoolSize:
+        if len(self.reads) >= self.statsPoolSize:
             self.reads.pop(0)
         power = self._execGetContent("getswitchpower")
         self.reads.append(power)
 
-        if len(self.reads) < self.averagePoolSize:
+        if len(self.reads) < self.statsPoolSize:
             return None
 
         pMedian = statistics.median(self.reads)
@@ -158,26 +158,80 @@ class AutoCharger(AbstractCharger):
         return None
 
 
+class UnuCharger(Charger):
+    """
+    This Charger recognizes a significant drop in Charging power
+    in the last 30% quantile compared to the max of the stats pool.
+    """
+
+    def __init__(self, name:str, AIN:str, fritzCon:Any, triggerPowerDiffMW:int, statsPoolSize:int = 3,
+                       startPowerMW=260, log=False):
+        super().__init__(name, AIN, fritzCon, triggerPowerDiffMW, statsPoolSize, startPowerMW, log)
+
+    def evaluate(self):
+        if len(self.reads) >= self.statsPoolSize and len(self.reads) > 0:
+            self.reads.pop(0)
+        power = self._execGetContent("getswitchpower")
+        if self.logFile and self.status == self.CHARGING:
+            print(f"{self.name}\t{time.time() - self.startTime:.0f}\t{power}",file=self.logFile)
+
+        if self.status != self.CHARGING:
+            # remove values below 10 mW so that when new charging starts
+            # the low values of disconnected charge do not average out new values
+            self.reads = list(filter(lambda v: v > 10, self.reads))
+        self.reads.append(power)
+
+        pMedian = statistics.median(self.reads)
+
+        if len(self.reads) < self.statsPoolSize:
+            if pMedian < 10:
+                self.status = self.NOT_CHARGING
+            else:
+                if not self.status == self.CHARGING:
+                    self.startTime = time.time()
+                    self.status = self.CHARGING
+            return self.status
+
+        if not self.status == self.CHARGING:
+            self.startTime = time.time()
+            self.status = self.CHARGING
+
+        # switch off if power threshold is reached
+        pMax = max(self.reads)
+        lowest30 = statistics.quantiles(self.reads, n=10)[2]
+        if pMax - lowest30 > self.triggerPowerMW:
+            self._execGetContent("setswitchoff")
+            print(f"Charged: {self.name}: {self.reads}",file=self.logFile)
+            self.reads = []
+
+            self.status = self.CHARGED
+        return self.status
+
+
 def createCharger(fc:FritzConnection, json:Dict[str,Any])->Charger:
     AIN = json["AIN"]
     name = json["name"]
-    triggerPowerMW = int(json["triggerPowerW"] * 1000)
-    averagePoolSize = json["averagePoolSize"]
+    statsPoolSize = json["statsPoolSize"]
     startPower = int(json.get("startPowerW","0") * 1000)
     log = json.get("log",False)
 
-    return Charger(name, AIN, fc, triggerPowerMW, averagePoolSize, startPower, log)
+    if json.get("type", None) == "UNU":
+        triggerPowerDiffMW = int(json["triggerPowerDiffW"] * 1000)
+        return UnuCharger(name, AIN, fc, triggerPowerDiffMW, statsPoolSize, startPower, log)
+    else:
+        triggerPowerMW = int(json["triggerPowerW"] * 1000)
+        return Charger(name, AIN, fc, triggerPowerMW, statsPoolSize, startPower, log)
 
 
 def createAutoCharger(fc:FritzConnection, json:Dict[str,Any]):
     AIN = json["AIN"]
-    averagePoolSize =  json["averagePoolSize"]
+    statsPoolSize =  json["statsPoolSize"]
     chrgrs = []
     for c in json["Charger"]:
         c["AIN"] = AIN
         chrgrs.append(createCharger(fc, c))
 
-    return AutoCharger(chrgrs, averagePoolSize)
+    return AutoCharger(chrgrs, statsPoolSize)
 
 
 
