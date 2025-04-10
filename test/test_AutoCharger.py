@@ -1,5 +1,6 @@
 import json
 import unittest
+from os import path
 from unittest import mock
 from unittest.mock import MagicMock
 
@@ -12,6 +13,8 @@ class TestAutoLoader(unittest.TestCase):
     def __init__(self, name, fc):
         super().__init__(name)
         setFile = "testSettings.json"
+        if not path.exists(setFile):
+            setFile = "test/" + setFile
 
         with open(setFile) as sFile:
             settings = json.load(sFile)
@@ -56,6 +59,7 @@ class TestAutoLoader(unittest.TestCase):
         self.assertEqual(unuCharger.Charger.CHARGING, self.ACharger.evaluate())
         self.assertEqual(unuCharger.Charger.CHARGING, self.ACharger.evaluate())
         self.assertEqual(unuCharger.Charger.CHARGING, self.ACharger.evaluate())
+
 
 if __name__ == '__main__':
     unittest.main()

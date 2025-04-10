@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import json
 import unittest
+from os import path
 
 import mock
 from mock.mock import MagicMock
@@ -16,6 +17,8 @@ class TestUnuCharger(unittest.TestCase):
     @mock.patch('unuCharger.FritzConnection')
     def test_UC(self, fc):
         setFile = "testSettings.json"
+        if not path.exists(setFile):
+            setFile = "test/" + setFile
 
         with open(setFile) as sFile:
             settings = json.load(sFile)
@@ -35,6 +38,7 @@ class TestUnuCharger(unittest.TestCase):
 
         for i, eStatus in enumerate(expectedStatus):
             self.assertEqual(eStatus, uc.evaluate(), f"Failed on input {i}")
+
 
 if __name__ == '__main__':
     unittest.main()
