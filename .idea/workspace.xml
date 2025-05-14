@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="cleanup">
+    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Added loop waiting for fritzbox to be available">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/testSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/test/testSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/unuCharger.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +23,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "bgobbi"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/bgobbi/unuCharger.git",
+    "accountId": "4d4adbcc-617f-45c0-884b-e319704c9e99"
+  }
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/unuCharger.py" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -260,7 +270,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744282348466</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Added loop waiting for fritzbox to be available">
+      <option name="closed" value="true" />
+      <created>1747209283987</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1747209283987</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -334,7 +352,8 @@
     <MESSAGE value="Fixed AutoDetect did not work correctly due to sorting direction error&#10;Implemented testAutoCharger" />
     <MESSAGE value="Implemented UnuCharger that detects differences in pool relative to max" />
     <MESSAGE value="cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="cleanup" />
+    <MESSAGE value="Added loop waiting for fritzbox to be available" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added loop waiting for fritzbox to be available" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
