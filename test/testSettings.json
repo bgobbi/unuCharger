@@ -33,7 +33,7 @@
         { "name": "Moto",
           "startPowerW": 8.5,
           "triggerPowerW": 8.4,
-          "statsPoolSize": 120, "rem": "Just time based because no deminuisching of power observed",
+          "statsPoolSize": 120, "rem": "Just time based because no diminishing of power observed",
           "log": true
         },
         { "name": "ATT",

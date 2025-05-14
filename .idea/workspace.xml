@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="cleanup">
-      <change beforePath="$PROJECT_DIR$/test/test_AutoCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_AutoCharger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/testSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/test/testSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/unuCharger.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +44,9 @@
     "Python tests.Python tests in testCharger.py.executor": "Run",
     "Python tests.Python tests in testUnuCharger.py.executor": "Run",
     "Python tests.Python tests in test_AutoCharger.py.executor": "Run",
+    "Python tests.Python tests in test_Charger.py.executor": "Run",
+    "Python tests.Python tests in test_UnuCharger.py.executor": "Run",
+    "Python.unuCharger.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -57,7 +63,29 @@
       <recent name="C:\Users\agobbi\dev\unuCharger\test" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Python tests in test_AutoCharger.py">
+  <component name="RunManager" selected="Python.unuCharger">
+    <configuration name="unuCharger" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="unuCharger" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/unuCharger.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Python tests in test" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="unuCharger" />
       <option name="ENV_FILES" value="" />
@@ -137,9 +165,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Python tests in test_AutoCharger.py" />
+        <item itemvalue="Python.unuCharger" />
         <item itemvalue="Python tests.Python tests in test" />
         <item itemvalue="Python tests.Python tests in test_UnuCharger.py" />
+        <item itemvalue="Python tests.Python tests in test_AutoCharger.py" />
       </list>
     </recent_temporary>
   </component>
@@ -223,7 +252,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744282046642</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="cleanup">
+      <option name="closed" value="true" />
+      <created>1744282348466</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1744282348466</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

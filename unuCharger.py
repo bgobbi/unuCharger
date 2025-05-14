@@ -250,8 +250,13 @@ if __name__ == "__main__":
     passWD  = settings["passWD"]
     freq    = settings["frequencyS"]
 
-    fc = FritzConnection(address=fritzIP, user=user, password=passWD,
-                         use_cache=True)
+    while True:
+        try:
+            fc = FritzConnection(address=fritzIP, user=user, password=passWD,
+                                 use_cache=True)
+        except Exception as error:
+            time.sleep(30)
+            print("Fritzbox not avialable:", error)
 
     batMonitors:List[Any] = []
     chargerByAIN:Dict[str,Charger] = {}
