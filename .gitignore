@@ -1,5 +1,6 @@
-/laucher.sh
+/launcher.sh
 /unuCharger/
+/Dynamic/**
 
 *.tab
 /settings.json

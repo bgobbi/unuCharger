@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="public repo">
+    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Fixed issue with fritz connection error checking">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -285,7 +286,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747209901470</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Fixed issue with fritz connection error checking">
+      <option name="closed" value="true" />
+      <created>1747396940225</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1747396940225</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -361,7 +370,8 @@
     <MESSAGE value="cleanup" />
     <MESSAGE value="Added loop waiting for fritzbox to be available" />
     <MESSAGE value="public repo" />
-    <option name="LAST_COMMIT_MESSAGE" value="public repo" />
+    <MESSAGE value="Fixed issue with fritz connection error checking" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed issue with fritz connection error checking" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -378,7 +388,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/unuCharger.py</url>
-          <line>264</line>
+          <line>261</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
