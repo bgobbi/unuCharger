@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Added loop waiting for fritzbox to be available">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="public repo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -23,18 +22,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "bgobbi"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;bgobbi&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/bgobbi/unuCharger.git",
-    "accountId": "4d4adbcc-617f-45c0-884b-e319704c9e99"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/bgobbi/unuCharger.git&quot;,
+    &quot;accountId&quot;: &quot;4d4adbcc-617f-45c0-884b-e319704c9e99&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/unuCharger.py" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -56,7 +55,7 @@
     "Python tests.Python tests in test_AutoCharger.py.executor": "Run",
     "Python tests.Python tests in test_Charger.py.executor": "Run",
     "Python tests.Python tests in test_UnuCharger.py.executor": "Run",
-    "Python.unuCharger.executor": "Run",
+    "Python.unuCharger.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -278,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747209283987</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="public repo">
+      <option name="closed" value="true" />
+      <created>1747209901470</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1747209901470</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -353,16 +360,12 @@
     <MESSAGE value="Implemented UnuCharger that detects differences in pool relative to max" />
     <MESSAGE value="cleanup" />
     <MESSAGE value="Added loop waiting for fritzbox to be available" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added loop waiting for fritzbox to be available" />
+    <MESSAGE value="public repo" />
+    <option name="LAST_COMMIT_MESSAGE" value="public repo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/unuCharger.py</url>
-          <line>240</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/test/test_AutoCharger.py</url>
           <line>52</line>
@@ -372,6 +375,11 @@
           <url>file://$PROJECT_DIR$/test/test_AutoCharger.py</url>
           <line>40</line>
           <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/unuCharger.py</url>
+          <line>264</line>
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

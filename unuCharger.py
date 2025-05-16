@@ -3,6 +3,7 @@
 import os.path
 import sys
 import time
+import traceback
 
 from fritzconnection import FritzConnection
 from typing import Any, List, Dict
@@ -254,21 +255,23 @@ if __name__ == "__main__":
         try:
             fc = FritzConnection(address=fritzIP, user=user, password=passWD,
                                  use_cache=True)
+            batMonitors:List[Any] = []
+            chargerByAIN:Dict[str,Charger] = {}
+
+
+            for json in settings["Charger"]:
+                if "Charger" not in json:
+                    batMonitors.append(createCharger(fc, json))
+                else:
+                    batMonitors.append(createAutoCharger(fc, json))
+
+            while True:
+                for bl in batMonitors:
+                    bl.evaluate()
+                time.sleep(freq)
+
         except Exception as error:
             time.sleep(30)
-            print("Fritzbox not avialable:", error)
+            traceback.print_exc()
+            warn("Retrying")
 
-    batMonitors:List[Any] = []
-    chargerByAIN:Dict[str,Charger] = {}
-
-
-    for json in settings["Charger"]:
-        if "Charger" not in json:
-            batMonitors.append(createCharger(fc, json))
-        else:
-            batMonitors.append(createAutoCharger(fc, json))
-
-    while True:
-        for bl in batMonitors:
-            bl.evaluate()
-        time.sleep(freq)
