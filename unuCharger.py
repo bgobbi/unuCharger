@@ -243,7 +243,7 @@ class UnuCharger(Charger):
         lowest30 = statistics.quantiles(self.reads, n=10)[2]
         if pMax - lowest30 > self.triggerPowerMW:
             self._execGetContent("setswitchoff")
-            print(f"Charged: {self.name}\t{datetime.now().time().strftime("%H:%M")}\t{self.reads}",file=self.logFile)
+            print(f"Charged: {self.name}\t{datetime.now().time().strftime('%H:%M')}\t{self.reads}",file=self.logFile)
             self.reads = []
 
             self.status = self.CHARGED
