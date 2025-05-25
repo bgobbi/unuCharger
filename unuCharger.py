@@ -193,7 +193,7 @@ class UnuCharger(Charger):
 
             if self.status == self.WAITING:
                 if self.logFile:
-                    print(f"{self.name}\t{datetime.now().time().strftime("%H:%M")}\t{time.time() - self.startTime:.0f}\t",
+                    print(f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t",
                           file=self.logFile)
                 return self.WAITING
 
