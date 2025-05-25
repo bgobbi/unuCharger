@@ -201,7 +201,7 @@ class UnuCharger(Charger):
             self.reads.pop(0)
 
         if self.logFile and power > 50:
-            print(f"{self.name}\t{datetime.now().time().strftime("%H:%M")}\t{time.time() - self.startTime:.0f}\t{power}",file=self.logFile)
+            print(f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}",file=self.logFile)
 
         if self.status == self.NOT_CHARGING or self.status == self.CHARGED:
             # remove values below 10 mW so that when new charging starts
