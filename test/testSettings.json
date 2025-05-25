@@ -9,6 +9,9 @@
     { "type": "UNU",
       "name": "unu",
       "AIN": "MyAIN",
+      "rem": "if startTimes are given initilly charging is interrupted until time in window is reached",
+      "startTimes": [{ "start": "9:50", "end": "11:30"},
+                     { "start": "23:30", "end": "1:00" }],
       "triggerPowerDiffW": 8,
       "statsPoolSize": 10,
       "log": true

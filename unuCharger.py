@@ -4,11 +4,12 @@ import os.path
 import sys
 import time
 import traceback
+from datetime import datetime
 
 from fritzconnection import FritzConnection
 from typing import Any, List, Dict
 import statistics
-import json
+import json as jsonLib
 
 
 def warn(strg:str):
@@ -107,6 +108,7 @@ class AutoCharger(AbstractCharger):
     def __init__(self, chargers:List[Charger], statsPoolSize:int = 3):
         AIN = chargers[0].AIN
         fritzCon = chargers[0].fritzCon
+        self.name = "AutoCharger"
 
         for c in chargers:
             if c.AIN != AIN or c.fritzCon != fritzCon:
@@ -165,18 +167,43 @@ class UnuCharger(Charger):
     in the last 30% quantile compared to the max of the stats pool.
     """
 
+    WAITING = 2
+
     def __init__(self, name:str, AIN:str, fritzCon:Any, triggerPowerDiffMW:int, statsPoolSize:int = 3,
-                       startPowerMW=260, log=False):
+                       startPowerMW=260, startTimes:List[Dict[str,datetime]] = [],log=False):
         super().__init__(name, AIN, fritzCon, triggerPowerDiffMW, statsPoolSize, startPowerMW, log)
+        self.startTimes = startTimes
 
     def evaluate(self):
+
+        power = self._execGetContent("getswitchpower")
+
+        # if we are in WAITING state check if we are now in a starting time period
+        # and switch to CHARGING
+        if self.status == self.WAITING:
+            if power > 1000:
+                self.status = self.CHARGING  ## user switched power back on lets continue charging
+            else:
+                now = datetime.now().time()
+                for p in self.startTimes:
+                    if (p["start"] < p["end"] and now > p["start"] and now < p["end"]) \
+                            or (p["start"] > p["end"] and (now > p["start"] or now < p["end"])):
+                        self.status = self.CHARGING  ## let the UnuCharger decide if we are charging based on power
+                        self._execGetContent("setswitchon")
+
+            if self.status == self.WAITING:
+                if self.logFile:
+                    print(f"{self.name}\t{datetime.now().time().strftime("%H:%M")}\t{time.time() - self.startTime:.0f}\t",
+                          file=self.logFile)
+                return self.WAITING
+
         if len(self.reads) >= self.statsPoolSize and len(self.reads) > 0:
             self.reads.pop(0)
-        power = self._execGetContent("getswitchpower")
-        if self.logFile and self.status == self.CHARGING:
-            print(f"{self.name}\t{time.time() - self.startTime:.0f}\t{power}",file=self.logFile)
 
-        if self.status != self.CHARGING:
+        if self.logFile and power > 50:
+            print(f"{self.name}\t{datetime.now().time().strftime("%H:%M")}\t{time.time() - self.startTime:.0f}\t{power}",file=self.logFile)
+
+        if self.status == self.NOT_CHARGING or self.status == self.CHARGED:
             # remove values below 10 mW so that when new charging starts
             # the low values of disconnected charge do not average out new values
             self.reads = list(filter(lambda v: v > 10, self.reads))
@@ -184,25 +211,39 @@ class UnuCharger(Charger):
 
         pMedian = statistics.median(self.reads)
 
-        if len(self.reads) < self.statsPoolSize:
-            if pMedian < 10:
-                self.status = self.NOT_CHARGING
-            else:
-                if not self.status == self.CHARGING:
-                    self.startTime = time.time()
-                    self.status = self.CHARGING
+        if pMedian < 10 and len(self.reads) < self.statsPoolSize:
+            self.status = self.NOT_CHARGING
             return self.status
 
         if not self.status == self.CHARGING:
             self.startTime = time.time()
+
+            # check if we are outside an allowed start time period
+            inWindow = False if len(self.startTimes) > 0 else True
+            now = datetime.now().time()
+            for p in self.startTimes:
+                #print(f'now:{now.strftime("%d.%m.%Y %H:%M")} start:{p["start"].strftime("%d.%m.%Y %H:%M")} now:{p["end"].strftime("%d.%m.%Y %H:%M")} ')
+                if    (p["start"] < p["end"] and now >= p["start"] and now <= p["end"]) \
+                   or (p["start"] > p["end"] and (now >= p["start"] or now <= p["end"])):
+                    inWindow = True
+                    break
+
+            if not inWindow:
+                self.status = self.WAITING
+                self._execGetContent("setswitchoff")
+                return self.status
+
             self.status = self.CHARGING
+
+        if len(self.reads) < self.statsPoolSize:
+            return self.status
 
         # switch off if power threshold is reached
         pMax = max(self.reads)
         lowest30 = statistics.quantiles(self.reads, n=10)[2]
         if pMax - lowest30 > self.triggerPowerMW:
             self._execGetContent("setswitchoff")
-            print(f"Charged: {self.name}: {self.reads}",file=self.logFile)
+            print(f"Charged: {self.name} {datetime.now().time().strftime("%H:%M")}: {self.reads}",file=self.logFile)
             self.reads = []
 
             self.status = self.CHARGED
@@ -218,7 +259,11 @@ def createCharger(fc:FritzConnection, json:Dict[str,Any])->Charger:
 
     if json.get("type", None) == "UNU":
         triggerPowerDiffMW = int(json["triggerPowerDiffW"] * 1000)
-        return UnuCharger(name, AIN, fc, triggerPowerDiffMW, statsPoolSize, startPower, log)
+        startTimes:List[Dict[str:Any]] = json.get("startTimes", [])
+        for p in startTimes:
+            p["start"] = datetime.strptime(p["start"],"%H:%M").time()
+            p["end"] = datetime.strptime(p["end"], "%H:%M").time()
+        return UnuCharger(name, AIN, fc, triggerPowerDiffMW, statsPoolSize, startPower, startTimes, log)
     else:
         triggerPowerMW = int(json["triggerPowerW"] * 1000)
         return Charger(name, AIN, fc, triggerPowerMW, statsPoolSize, startPower, log)
@@ -235,43 +280,51 @@ def createAutoCharger(fc:FritzConnection, json:Dict[str,Any]):
     return AutoCharger(chrgrs, statsPoolSize)
 
 
+class ChargerLoop():
+    def __init__(self, setFile):
+        with open(setFile) as sFile:
+            self.settings = jsonLib.load(sFile)
+        self.fritzIP = self.settings["fritzIP"]
+        self.user = self.settings["user"]
+        self.passWD = self.settings["passWD"]
+        self.freq = self.settings["frequencyS"]
 
-#######################################################
-if __name__ == "__main__":
+        self.fc = FritzConnection(address=self.fritzIP, user=self.user, password=self.passWD,
+                                  use_cache=True)
+        self.batMonitors: List[Any] = []
+        for json in self.settings["Charger"]:
+            if "Charger" not in json:
+                self.batMonitors.append(createCharger(self.fc, json))
+            else:
+                self.batMonitors.append(createAutoCharger(self.fc, json))
 
+
+    def loop(self):
+        """
+            Loop over known chargers and evalute their state then repeat
+        """
+        while True:
+            for bl in self.batMonitors:
+                bl.evaluate()
+            time.sleep(self.freq)
+
+
+def endlessLoop():
     setFile = "settings.json"
     if len(sys.argv) > 1:
         setFile = sys.argv[1]
 
-    with open(setFile) as sFile:
-        settings = json.load(sFile)
-
-    fritzIP = settings["fritzIP"]
-    user    = settings["user"]
-    passWD  = settings["passWD"]
-    freq    = settings["frequencyS"]
-
     while True:
         try:
-            fc = FritzConnection(address=fritzIP, user=user, password=passWD,
-                                 use_cache=True)
-            batMonitors:List[Any] = []
-            chargerByAIN:Dict[str,Charger] = {}
-
-
-            for json in settings["Charger"]:
-                if "Charger" not in json:
-                    batMonitors.append(createCharger(fc, json))
-                else:
-                    batMonitors.append(createAutoCharger(fc, json))
-
-            while True:
-                for bl in batMonitors:
-                    bl.evaluate()
-                time.sleep(freq)
-
+            chargeLoop = ChargerLoop(setFile)
+            chargeLoop.loop()
         except Exception as error:
             time.sleep(30)
             traceback.print_exc()
             warn("Retrying")
+
+
+#######################################################
+if __name__ == "__main__":
+    endlessLoop()
 
