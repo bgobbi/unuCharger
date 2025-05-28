@@ -60,7 +60,7 @@ class TestUnuCharger(unittest.TestCase):
         self.defaultTest(fc,testtime,startTimes)
 
     @mock.patch('unuCharger.FritzConnection')
-    def test_UC_in_withWait(self, fc):
+    def test_UC_withWait2(self, fc):
         """ Check that WAITING is working and loading starts in starting period
         """
         setFile = "testSettings.json"
@@ -103,6 +103,35 @@ class TestUnuCharger(unittest.TestCase):
                 dt= time_machine.time() - uc.startTime
                 assert(dt > 3600 and dt < 36200, "start time not set correctly 2")
 
+    @mock.patch('unuCharger.FritzConnection')
+    def test_UC_withWait3(self, fc):
+        """ Check that when user turns power back on in WAITING charger starts normal charging
+        """
+        setFile = "testSettings.json"
+        if not path.exists(setFile):
+            setFile = "test/" + setFile
+
+        with open(setFile) as sFile:
+            settings = json.load(sFile)
+
+        uc = createCharger(fc, settings["Charger"][0])
+
+        powerSeq = [ 0, 0, 0, 317000, 0, 0, 317001, # one more zero inserted because switsching to WAITING consumes one value
+                    316350, 316350, 316350, 316350, 317000, 317000, 317000, 317000, 316710, 316710,
+                    316710, 316710, 315780, 315780, 315780, 315780, 316070, 316070, 316070, 315990,
+                    315990, 305120, 305120, 294610, 294610, 0, 0 ]
+        expectedStatus = [unuCharger.Charger.NOT_CHARGING] * 3 + [unuCharger.UnuCharger.WAITING] * 2 + [unuCharger.UnuCharger.CHARGING] + \
+                         [unuCharger.Charger.CHARGING] * 24
+        expectedStatus.append(unuCharger.Charger.CHARGED)
+        expectedStatus.append(unuCharger.Charger.NOT_CHARGING)
+        mockgetCont = MagicMock(side_effect=powerSeq)
+        uc._execGetContent = mockgetCont
+
+        # check that waiting status is reached
+        with time_machine.travel(datetime.strptime("01/01/2025 9:00", "%m/%d/%Y %H:%M").astimezone()):
+            for i, eStatus in enumerate(expectedStatus):
+                self.assertEqual(eStatus, uc.evaluate(), f"Failed on input {i}")
+            assert(time_machine.time() - uc.startTime > 100, "start time not set correctly")
 
 if __name__ == '__main__':
     unittest.main()

@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Fixed issue with fritz connection error checking">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Added Waiting for StartTime">
+      <change afterPath="$PROJECT_DIR$/UnuChargerWeb.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test_UnuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_UnuCharger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/unuCharger.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +20,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Unit Test" />
+        <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -49,6 +54,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "Python tests.Python tests in test.executor": "Run",
     "Python tests.Python tests in testAutoCharger.py.executor": "Run",
     "Python tests.Python tests in testCharger.py.executor": "Run",
@@ -56,7 +62,10 @@
     "Python tests.Python tests in test_AutoCharger.py.executor": "Run",
     "Python tests.Python tests in test_Charger.py.executor": "Run",
     "Python tests.Python tests in test_UnuCharger.py.executor": "Run",
-    "Python.unuCharger.executor": "Debug",
+    "Python.UnuChargerWeb.executor": "Run",
+    "Python.app.executor": "Run",
+    "Python.flaskHello.executor": "Run",
+    "Python.unuCharger.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -68,12 +77,57 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\agobbi\dev\unuCharger\test" />
+      <recent name="C:\Users\agobbi\dev\unuCharger" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\agobbi\dev\unuCharger\test" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.unuCharger">
+  <component name="RunManager" selected="Python tests.Python tests in test">
+    <configuration name="UnuChargerWeb" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="unuCharger" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/UnuChargerWeb.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="unuCharger" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="unuCharger" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="unuCharger" />
       <option name="ENV_FILES" value="" />
@@ -108,21 +162,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;$PROJECT_DIR$/test&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Python tests in test_AutoCharger.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="unuCharger" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/test_AutoCharger.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
@@ -175,10 +214,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.unuCharger" />
         <item itemvalue="Python tests.Python tests in test" />
         <item itemvalue="Python tests.Python tests in test_UnuCharger.py" />
-        <item itemvalue="Python tests.Python tests in test_AutoCharger.py" />
+        <item itemvalue="Python.app" />
+        <item itemvalue="Python.UnuChargerWeb" />
+        <item itemvalue="Python.unuCharger" />
       </list>
     </recent_temporary>
   </component>
@@ -294,10 +334,71 @@
       <option name="project" value="LOCAL" />
       <updated>1747396940225</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Fixed issue with fritz connection error checking">
+      <option name="closed" value="true" />
+      <created>1747397185505</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1747397185505</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Fixed issue with fritz connection error checking">
+      <option name="closed" value="true" />
+      <created>1748158775130</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1748158775130</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Added Waiting for StartTime">
+      <option name="closed" value="true" />
+      <created>1748158814383</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1748158814383</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Added Waiting for StartTime">
+      <option name="closed" value="true" />
+      <created>1748164640139</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1748164640139</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Added Waiting for StartTime">
+      <option name="closed" value="true" />
+      <created>1748165351117</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1748165351117</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Added Waiting for StartTime">
+      <option name="closed" value="true" />
+      <created>1748165498483</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1748165498483</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Added Waiting for StartTime">
+      <option name="closed" value="true" />
+      <created>1748165598247</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1748165598247</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="8cf312da-4cfe-44f7-aa5f-b5aab234d54a" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="RECENT_FILTERS">
       <map>
         <entry key="Paths">
@@ -331,6 +432,11 @@
     </option>
     <option name="TAB_STATES">
       <map>
+        <entry key="8cf312da-4cfe-44f7-aa5f-b5aab234d54a">
+          <value>
+            <State />
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State>
@@ -371,7 +477,8 @@
     <MESSAGE value="Added loop waiting for fritzbox to be available" />
     <MESSAGE value="public repo" />
     <MESSAGE value="Fixed issue with fritz connection error checking" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed issue with fritz connection error checking" />
+    <MESSAGE value="Added Waiting for StartTime" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Waiting for StartTime" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -387,9 +494,24 @@
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/unuCharger.py</url>
-          <line>261</line>
-          <option name="timeStamp" value="27" />
+          <url>file://$PROJECT_DIR$/UnuChargerWeb.py</url>
+          <line>34</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/test_UnuCharger.py</url>
+          <line>61</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/test_UnuCharger.py</url>
+          <line>127</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/test_UnuCharger.py</url>
+          <line>133</line>
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

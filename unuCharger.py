@@ -191,11 +191,11 @@ class UnuCharger(Charger):
                         self.status = self.CHARGING  ## let the UnuCharger decide if we are charging based on power
                         self._execGetContent("setswitchon")
 
-            if self.status == self.WAITING:
-                if self.logFile:
-                    print(f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t",
-                          file=self.logFile)
-                return self.WAITING
+                if self.status == self.WAITING:
+                    if self.logFile:
+                        print(f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\tWAITING",
+                              file=self.logFile)
+                    return self.WAITING
 
         if len(self.reads) >= self.statsPoolSize and len(self.reads) > 0:
             self.reads.pop(0)
