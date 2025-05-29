@@ -241,7 +241,8 @@ class UnuCharger(Charger):
         # switch off if power threshold is reached
         pMax = max(self.reads)
         lowest30 = statistics.quantiles(self.reads, n=10)[2]
-        if pMax - lowest30 > self.triggerPowerMW:
+        if (pMax - lowest30 > self.triggerPowerMW   # max power in pool has dropped by triggerPower
+           or pMax < 10000):                        # this is an accidental on switch by user
             self._execGetContent("setswitchoff")
             print(f"Charged: {self.name}\t{datetime.now().time().strftime('%H:%M')}\t{self.reads}",file=self.logFile)
             self.reads = []
