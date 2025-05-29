@@ -205,10 +205,7 @@ class UnuCharger(Charger):
         if self.logFile and power > 50:
             print(f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}",file=self.logFile)
 
-        if self.status == self.NOT_CHARGING or self.status == self.CHARGED:
-            # remove values below 10 mW so that when new charging starts
-            # the low values of disconnected charge do not average out new values
-            self.reads = list(filter(lambda v: v > 10, self.reads))
+        self.reads = list(filter(lambda v: v > 10, self.reads))
         self.reads.append(power)
 
         pMedian = statistics.median(self.reads)
