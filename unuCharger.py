@@ -193,8 +193,10 @@ class UnuCharger(Charger):
 
                 if self.status == self.WAITING:
                     if self.logFile:
-                        print(f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\tWAITING",
-                              file=self.logFile)
+                        now = datetime.now().time()
+                        if now.minute % 5 == 0:
+                            print(f"{self.name}\t{now.strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\tWAITING",
+                                  file=self.logFile)
                     return self.WAITING
 
         if len(self.reads) >= self.statsPoolSize and len(self.reads) > 0:
