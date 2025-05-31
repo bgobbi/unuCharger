@@ -75,7 +75,7 @@ class Charger(AbstractCharger):
         power = self._execGetContent("getswitchpower")
         if self.logFile and self.status == self.CHARGING:
             print(f"{self.name}\t{time.time() - self.startTime:.0f}\t{power}",file=self.logFile)
-        if self.debugFile:
+        if self.debugFile and (self.status != Charger.NOT_CHARGING or power >= 10):
             print(
                 f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}\t{self.status}",
                 file=self.debugFile)
@@ -194,7 +194,7 @@ class UnuCharger(Charger):
     def evaluate(self):
 
         power = self._execGetContent("getswitchpower")
-        if self.debugFile:
+        if self.debugFile and (self.status != Charger.NOT_CHARGING or power >= 10):
             print(f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}\t{self.status}",file=self.debugFile)
 
         # if we are in WAITING state check if we are now in a starting time period
