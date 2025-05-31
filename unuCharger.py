@@ -55,7 +55,7 @@ class Charger(AbstractCharger):
             lf =  f"{name}.tab"
             isOldFile =  os.path.exists(lf)
             self.logFile = open(lf,"at", buffering=1)
-            if isOldFile and os.path.getsize(lf) > 10000:
+            if isOldFile and os.path.getsize(lf) > 50000:
                 self.logFile.truncate(0)
 
         warn(f"Batterie monitor created for {name} triggering at {triggerPowerMW/1000:.2f}")
@@ -181,7 +181,7 @@ class UnuCharger(Charger):
         # if we are in WAITING state check if we are now in a starting time period
         # and switch to CHARGING
         if self.status == self.WAITING:
-            if power > 1000:
+            if power > 10:
                 self.status = self.CHARGING  ## user switched power back on lets continue charging
             else:
                 now = datetime.now().time()
