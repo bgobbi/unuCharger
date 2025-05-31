@@ -14,7 +14,8 @@
                      { "start": "23:30", "end": "1:00" }],
       "triggerPowerDiffW": 8,
       "statsPoolSize": 10,
-      "log": true
+      "log": true,
+      "debug": true
     },
 
     { "AIN": "MyAIN2",

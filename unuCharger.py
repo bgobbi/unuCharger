@@ -41,7 +41,7 @@ class AbstractCharger:
 class Charger(AbstractCharger):
 
     def __init__(self, name:str, AIN:str, fritzCon:Any, triggerPowerMW:int, statsPoolSize:int = 3,
-                       startPowerMW=0, log=False):
+                       startPowerMW=0, log=False, debug=False):
         super().__init__(AIN, fritzCon)
         self.name = name
         self.triggerPowerMW = triggerPowerMW
@@ -58,6 +58,15 @@ class Charger(AbstractCharger):
             if isOldFile and os.path.getsize(lf) > 50000:
                 self.logFile.truncate(0)
 
+        self.debugFile = None
+        if debug:
+            lf =  f"{name}.debug.txt"
+            isOldFile =  os.path.exists(lf)
+            self.debugFile = open(lf,"at", buffering=1)
+            if isOldFile and os.path.getsize(lf) > 50000:
+                self.debugFile.truncate(0)
+
+
         warn(f"Batterie monitor created for {name} triggering at {triggerPowerMW/1000:.2f}")
 
     def evaluate(self):
@@ -66,6 +75,10 @@ class Charger(AbstractCharger):
         power = self._execGetContent("getswitchpower")
         if self.logFile and self.status == self.CHARGING:
             print(f"{self.name}\t{time.time() - self.startTime:.0f}\t{power}",file=self.logFile)
+        if self.debugFile:
+            print(
+                f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}\t{self.status}",
+                file=self.debugFile)
 
         if self.status != self.CHARGING:
             # remove values below 10 mW so that when new charging starts
@@ -91,6 +104,10 @@ class Charger(AbstractCharger):
         # switch off if power threshold is reached
         if pMedian <= self.triggerPowerMW:
             self._execGetContent("setswitchoff")
+            if self.debugFile:
+                print(
+                    f"Switched OFF: {self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}\t{self.status}",
+                    file=self.debugFile)
             print(f"Charged: {self.name}: {self.reads}",file=self.logFile)
             self.reads = []
 
@@ -170,18 +187,20 @@ class UnuCharger(Charger):
     WAITING = 2
 
     def __init__(self, name:str, AIN:str, fritzCon:Any, triggerPowerDiffMW:int, statsPoolSize:int = 3,
-                       startPowerMW=260, startTimes:List[Dict[str,datetime]] = [],log=False):
-        super().__init__(name, AIN, fritzCon, triggerPowerDiffMW, statsPoolSize, startPowerMW, log)
+                       startPowerMW=260, startTimes:List[Dict[str,datetime]] = [],log=False, debug=False):
+        super().__init__(name, AIN, fritzCon, triggerPowerDiffMW, statsPoolSize, startPowerMW, log, debug)
         self.startTimes = startTimes
 
     def evaluate(self):
 
         power = self._execGetContent("getswitchpower")
+        if self.debugFile:
+            print(f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}\t{self.status}",file=self.debugFile)
 
         # if we are in WAITING state check if we are now in a starting time period
         # and switch to CHARGING
         if self.status == self.WAITING:
-            if power > 10:
+            if power > 1000:
                 self.status = self.CHARGING  ## user switched power back on lets continue charging
             else:
                 now = datetime.now().time()
@@ -190,6 +209,10 @@ class UnuCharger(Charger):
                             or (p["start"] > p["end"] and (now > p["start"] or now < p["end"])):
                         self.status = self.CHARGING  ## let the UnuCharger decide if we are charging based on power
                         self._execGetContent("setswitchon")
+                        if self.debugFile:
+                            print(
+                                f"Switched ON: {self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}\t{self.status}",
+                                file=self.debugFile)
 
                 if self.status == self.WAITING:
                     if self.logFile:
@@ -230,6 +253,10 @@ class UnuCharger(Charger):
             if not inWindow:
                 self.status = self.WAITING
                 self._execGetContent("setswitchoff")
+                if self.debugFile:
+                    print(
+                        f"Switched OFF: {self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}\t{self.status}",
+                        file=self.debugFile)
                 return self.status
 
             self.status = self.CHARGING
@@ -243,6 +270,10 @@ class UnuCharger(Charger):
         if (pMax - lowest30 > self.triggerPowerMW   # max power in pool has dropped by triggerPower
            or pMax < 10000):                        # this is an accidental on switch by user
             self._execGetContent("setswitchoff")
+            if self.debugFile:
+                print(
+                    f"Switched OFF: {self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}\t{self.status}",
+                    file=self.debugFile)
             print(f"Charged: {self.name}\t{datetime.now().time().strftime('%H:%M')}\t{self.reads}",file=self.logFile)
             self.reads = []
 
@@ -256,6 +287,7 @@ def createCharger(fc:FritzConnection, json:Dict[str,Any])->Charger:
     statsPoolSize = json["statsPoolSize"]
     startPower = int(json.get("startPowerW","0") * 1000)
     log = json.get("log",False)
+    debug = json.get("debug",False)
 
     if json.get("type", None) == "UNU":
         triggerPowerDiffMW = int(json["triggerPowerDiffW"] * 1000)
@@ -263,10 +295,10 @@ def createCharger(fc:FritzConnection, json:Dict[str,Any])->Charger:
         for p in startTimes:
             p["start"] = datetime.strptime(p["start"],"%H:%M").time()
             p["end"] = datetime.strptime(p["end"], "%H:%M").time()
-        return UnuCharger(name, AIN, fc, triggerPowerDiffMW, statsPoolSize, startPower, startTimes, log)
+        return UnuCharger(name, AIN, fc, triggerPowerDiffMW, statsPoolSize, startPower, startTimes, log, debug)
     else:
         triggerPowerMW = int(json["triggerPowerW"] * 1000)
-        return Charger(name, AIN, fc, triggerPowerMW, statsPoolSize, startPower, log)
+        return Charger(name, AIN, fc, triggerPowerMW, statsPoolSize, startPower, log, debug)
 
 
 def createAutoCharger(fc:FritzConnection, json:Dict[str,Any]):
