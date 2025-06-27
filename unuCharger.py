@@ -89,7 +89,7 @@ class Charger(AbstractCharger):
         pMedian = statistics.median(self.reads)
 
         if len(self.reads) < self.statsPoolSize:
-            if pMedian < 10:
+            if pMedian < 160:
                 self.status = self.NOT_CHARGING
             else:
                 if not self.status == self.CHARGING:
@@ -233,7 +233,7 @@ class UnuCharger(Charger):
 
         pMedian = statistics.median(self.reads)
 
-        if pMedian < 10 and len(self.reads) < self.statsPoolSize:
+        if pMedian < 170 and len(self.reads) < self.statsPoolSize:
             self.status = self.NOT_CHARGING
             return self.status
 

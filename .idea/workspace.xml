@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Added Waiting for StartTime">
+    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Added debug option to report all interaction with the power switch">
       <change afterPath="$PROJECT_DIR$/UnuChargerWeb.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/unuCharger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test_UnuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_UnuCharger.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,28 +51,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Python tests.Python tests in test.executor": "Run",
-    "Python tests.Python tests in testAutoCharger.py.executor": "Run",
-    "Python tests.Python tests in testCharger.py.executor": "Run",
-    "Python tests.Python tests in testUnuCharger.py.executor": "Run",
-    "Python tests.Python tests in test_AutoCharger.py.executor": "Run",
-    "Python tests.Python tests in test_Charger.py.executor": "Run",
-    "Python tests.Python tests in test_UnuCharger.py.executor": "Run",
-    "Python.UnuChargerWeb.executor": "Run",
-    "Python.app.executor": "Run",
-    "Python.flaskHello.executor": "Run",
-    "Python.unuCharger.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "develop",
-    "last_opened_file_path": "C:/Users/agobbi/dev/unuCharger",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Python tests.Python tests in test.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in testAutoCharger.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in testCharger.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in testUnuCharger.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_AutoCharger.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_Charger.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_UnuCharger.py.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.UnuChargerWeb.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;Python.flaskHello.executor&quot;: &quot;Run&quot;,
+    &quot;Python.unuCharger.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/agobbi/dev/unuCharger&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\agobbi\dev\unuCharger\test" />
@@ -397,7 +397,55 @@
       <option name="project" value="LOCAL" />
       <updated>1748417504040</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Monitoring for user siwtching power on when batterie is full">
+      <option name="closed" value="true" />
+      <created>1748514976329</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1748514976329</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Monitoring for user switching power on when batterie is full">
+      <option name="closed" value="true" />
+      <created>1748515913180</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1748515913180</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Monitoring for user switching power on when batterie is full">
+      <option name="closed" value="true" />
+      <created>1748516578076</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1748516578076</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Charder switched on at 2pm from waiting stage?">
+      <option name="closed" value="true" />
+      <created>1748697083200</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1748697083200</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Added debug option to report all interaction with the power switch">
+      <option name="closed" value="true" />
+      <created>1748713644805</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1748713644805</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Added debug option to report all interaction with the power switch">
+      <option name="closed" value="true" />
+      <created>1748714036613</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1748714036613</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -485,21 +533,15 @@
     <MESSAGE value="public repo" />
     <MESSAGE value="Fixed issue with fritz connection error checking" />
     <MESSAGE value="Added Waiting for StartTime" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Waiting for StartTime" />
+    <MESSAGE value="Monitoring for user siwtching power on when batterie is full" />
+    <MESSAGE value="Monitoring for user switching power on when batterie is full" />
+    <MESSAGE value="Charder switched on at 2pm from waiting stage?" />
+    <MESSAGE value="Added debug option to report all interaction with the power switch" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added debug option to report all interaction with the power switch" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/test_AutoCharger.py</url>
-          <line>52</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/test_AutoCharger.py</url>
-          <line>40</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/UnuChargerWeb.py</url>
           <line>34</line>
@@ -512,13 +554,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/test/test_UnuCharger.py</url>
-          <line>127</line>
-          <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/test_UnuCharger.py</url>
-          <line>133</line>
-          <option name="timeStamp" value="34" />
+          <line>163</line>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
