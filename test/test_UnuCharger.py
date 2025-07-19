@@ -28,7 +28,9 @@ class TestUnuCharger(unittest.TestCase):
         with open(setFile) as sFile:
             settings = json.load(sFile)
 
+        # overwrite start times
         settings["Charger"][0]["startTimes"] = startTimes
+
         uc = createCharger(fc, settings["Charger"][0])
 
         powerSeq = [
@@ -163,6 +165,35 @@ class TestUnuCharger(unittest.TestCase):
             for i, eStatus in enumerate(expectedStatus):
                 self.assertEqual(eStatus, uc.evaluate(), f"Failed on input {i}")
             assert(time_machine.time() - uc.startTime > 100, "start time not set correctly")
+
+
+    @mock.patch('unuCharger.FritzConnection')
+    def test_UC_140(self, fc):
+        """ Check what happes if frity uses occasionally 140mw
+        """
+        setFile = "testSettings.json"
+        if not path.exists(setFile):
+            setFile = "test/" + setFile
+
+        with open(setFile) as sFile:
+            settings = json.load(sFile)
+
+        uc = createCharger(fc, settings["Charger"][0])
+
+        powerSeq = [ 0, 0, 0, 140, 0, 0, 140, # one more zero inserted because switsching to WAITING consumes one value
+                    140, 140, 140,140, 140, 140,140, 140, 140,140, 140, 140, 140, 140, 140,140, 140, 140,140, 140, 140,140, 140, 140,
+                    0, 0 ]
+        expectedStatus = [unuCharger.Charger.NOT_CHARGING] * len(powerSeq)
+        mockgetCont = MagicMock(side_effect=powerSeq)
+        uc._execGetContent = mockgetCont
+
+        # check that waiting status is reached
+        with time_machine.travel(datetime.strptime("01/01/2025 13:00", "%m/%d/%Y %H:%M").astimezone()):
+            for i, eStatus in enumerate(expectedStatus):
+                self.assertEqual(eStatus, uc.evaluate(), f"Failed on input {i}")
+            assert(time_machine.time() - uc.startTime > 100, "start time not set correctly")
+
+
 
 if __name__ == '__main__':
     unittest.main()

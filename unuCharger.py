@@ -89,7 +89,7 @@ class Charger(AbstractCharger):
         pMedian = statistics.median(self.reads)
 
         if len(self.reads) < self.statsPoolSize:
-            if pMedian < 160:
+            if pMedian < 170:
                 self.status = self.NOT_CHARGING
             else:
                 if not self.status == self.CHARGING:
@@ -194,33 +194,16 @@ class UnuCharger(Charger):
     def evaluate(self):
 
         power = self._execGetContent("getswitchpower")
+
         if self.debugFile and (self.status != Charger.NOT_CHARGING or power >= 10):
             print(f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}\t{self.status}",file=self.debugFile)
 
         # if we are in WAITING state check if we are now in a starting time period
         # and switch to CHARGING
         if self.status == self.WAITING:
-            if power > 1000:
-                self.status = self.CHARGING  ## user switched power back on lets continue charging
-            else:
-                now = datetime.now().time()
-                for p in self.startTimes:
-                    if (p["start"] < p["end"] and now > p["start"] and now < p["end"]) \
-                            or (p["start"] > p["end"] and (now > p["start"] or now < p["end"])):
-                        self.status = self.CHARGING  ## let the UnuCharger decide if we are charging based on power
-                        self._execGetContent("setswitchon")
-                        if self.debugFile:
-                            print(
-                                f"Switched ON: {self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}\t{self.status}",
-                                file=self.debugFile)
-
-                if self.status == self.WAITING:
-                    if self.logFile:
-                        now = datetime.now().time()
-                        if now.minute % 5 == 0:
-                            print(f"{self.name}\t{now.strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\tWAITING",
-                                  file=self.logFile)
-                    return self.WAITING
+            self.status = self.evaluateWaiting(power)
+            if self.status == self.WAITING:
+                return self.status
 
         if len(self.reads) >= self.statsPoolSize and len(self.reads) > 0:
             self.reads.pop(0)
@@ -233,7 +216,7 @@ class UnuCharger(Charger):
 
         pMedian = statistics.median(self.reads)
 
-        if pMedian < 170 and len(self.reads) < self.statsPoolSize:
+        if pMedian < 170:
             self.status = self.NOT_CHARGING
             return self.status
 
@@ -241,15 +224,7 @@ class UnuCharger(Charger):
             self.startTime = time.time()
 
             # check if we are outside an allowed start time period
-            inWindow = False if len(self.startTimes) > 0 else True
-            now = datetime.now().time()
-            for p in self.startTimes:
-                #print(f'now:{now.strftime("%d.%m.%Y %H:%M")} start:{p["start"].strftime("%d.%m.%Y %H:%M")} now:{p["end"].strftime("%d.%m.%Y %H:%M")} ')
-                if    (p["start"] < p["end"] and now >= p["start"] and now <= p["end"]) \
-                   or (p["start"] > p["end"] and (now >= p["start"] or now <= p["end"])):
-                    inWindow = True
-                    break
-
+            inWindow = self.inLoadTimeWindow()
             if not inWindow:
                 self.status = self.WAITING
                 self._execGetContent("setswitchoff")
@@ -279,6 +254,45 @@ class UnuCharger(Charger):
 
             self.status = self.CHARGED
         return self.status
+
+    def inLoadTimeWindow(self):
+        inWindow = False if len(self.startTimes) > 0 else True
+        now = datetime.now().time()
+        for p in self.startTimes:
+            # print(f'now:{now.strftime("%d.%m.%Y %H:%M")} start:{p["start"].strftime("%d.%m.%Y %H:%M")} now:{p["end"].strftime("%d.%m.%Y %H:%M")} ')
+            if (p["start"] < p["end"] and now >= p["start"] and now <= p["end"]) \
+                    or (p["start"] > p["end"] and (now >= p["start"] or now <= p["end"])):
+                inWindow = True
+                break
+        return inWindow
+
+    def evaluateWaiting(self, power:float)-> int:
+        """
+        Evaluate poser in state == WAITING
+        returns: new status
+        """
+        if power > 1000:
+            return self.CHARGING  ## user switched power back on a second time lets continue charging
+        else:
+            now = datetime.now().time()
+            for p in self.startTimes:
+                ## check if we are in the loading time window
+                if (    p["start"] < p["end"] and now > p["start"] and now < p["end"]) \
+                    or (p["start"] > p["end"] and (now > p["start"] or now < p["end"])):
+                    # we were waiting so now we entered the start charging time window, lets do it.
+                    self._execGetContent("setswitchon")
+                    if self.debugFile:
+                        print(
+                            f"Switched ON: {self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}\t{self.status}",
+                            file=self.debugFile)
+                    return self.CHARGING  ## let the UnuCharger decide if we are charging based on power
+
+            if self.logFile:
+                now = datetime.now().time()
+                if now.minute % 5 == 0:
+                    print(f"{self.name}\t{now.strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\tWAITING",
+                          file=self.logFile)
+            return self.WAITING
 
 
 def createCharger(fc:FritzConnection, json:Dict[str,Any])->Charger:
