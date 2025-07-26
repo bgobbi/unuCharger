@@ -211,7 +211,7 @@ class UnuCharger(Charger):
         if self.logFile and power > 50:
             print(f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}",file=self.logFile)
 
-        self.reads = list(filter(lambda v: v > 10, self.reads))
+        self.reads = list(filter(lambda v: v > 150, self.reads))
         self.reads.append(power)
 
         pMedian = statistics.median(self.reads)
@@ -220,7 +220,7 @@ class UnuCharger(Charger):
             self.status = self.NOT_CHARGING
             return self.status
 
-        if not self.status == self.CHARGING:
+        if self.status != self.CHARGING:
             self.startTime = time.time()
 
             # check if we are outside an allowed start time period

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="Increased threshold for no action from 10 to 170mW since it seems the plug occasionally will report 140mW">
+    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="140mW readings do not cause WAITING state">
       <change afterPath="$PROJECT_DIR$/UnuChargerWeb.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -55,6 +55,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "DefaultHtmlFileTemplate": "HTML File",
+    "Python tests.Python tests for test_UnuCharger.TestUnuCharger.test_UC_withWait5.executor": "Debug",
     "Python tests.Python tests in test.executor": "Run",
     "Python tests.Python tests in testAutoCharger.py.executor": "Run",
     "Python tests.Python tests in testCharger.py.executor": "Run",
@@ -86,7 +87,22 @@
       <recent name="C:\Users\agobbi\dev\unuCharger\test" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Python tests in test_UnuCharger.py">
+  <component name="RunManager" selected="Python tests.Python tests in test">
+    <configuration name="Python tests for test_UnuCharger.TestUnuCharger.test_UC_withWait5" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="unuCharger" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_UnuCharger.TestUnuCharger.test_UC_withWait5&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
     <configuration name="Python tests in test" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="unuCharger" />
       <option name="ENV_FILES" value="" />
@@ -166,23 +182,6 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_UnuCharger.TestUnuCharger.test_UC_140" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="unuCharger" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../../../../Programs/miniforge-pypy3/envs/large/python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_UnuCharger.TestUnuCharger.test_UC_140&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <configuration name="pytest for test_UnuCharger.TestUnuCharger.test_UC_withWait2" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="unuCharger" />
       <option name="ENV_FILES" value="" />
@@ -202,11 +201,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.Python tests in test" />
+        <item itemvalue="Python tests.Python tests for test_UnuCharger.TestUnuCharger.test_UC_withWait5" />
         <item itemvalue="Python tests.Python tests in test_UnuCharger.py" />
         <item itemvalue="Python tests.pytest for test_UnuCharger.TestUnuCharger.test_UC_withWait2" />
         <item itemvalue="Python tests.pytest for test_UnuCharger.TestUnuCharger.test_UC" />
-        <item itemvalue="Python tests.pytest for test_UnuCharger.TestUnuCharger.test_UC_140" />
-        <item itemvalue="Python tests.Python tests in test" />
       </list>
     </recent_temporary>
   </component>
@@ -442,7 +441,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751027906717</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="140mW readings do not cause WAITING state">
+      <option name="closed" value="true" />
+      <created>1752946621703</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1752946621703</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -535,7 +542,8 @@
     <MESSAGE value="Charder switched on at 2pm from waiting stage?" />
     <MESSAGE value="Added debug option to report all interaction with the power switch" />
     <MESSAGE value="Increased threshold for no action from 10 to 170mW since it seems the plug occasionally will report 140mW" />
-    <option name="LAST_COMMIT_MESSAGE" value="Increased threshold for no action from 10 to 170mW since it seems the plug occasionally will report 140mW" />
+    <MESSAGE value="140mW readings do not cause WAITING state" />
+    <option name="LAST_COMMIT_MESSAGE" value="140mW readings do not cause WAITING state" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -553,18 +561,18 @@
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <condition expression="i==13" language="Python" />
           <url>file://$PROJECT_DIR$/test/test_UnuCharger.py</url>
-          <line>192</line>
+          <line>237</line>
           <option name="timeStamp" value="34" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/test_UnuCharger.py</url>
-          <line>48</line>
-          <option name="timeStamp" value="35" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/test/test_UnuCharger.py</url>
           <line>84</line>
           <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/test_UnuCharger.py</url>
+          <line>193</line>
+          <option name="timeStamp" value="39" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

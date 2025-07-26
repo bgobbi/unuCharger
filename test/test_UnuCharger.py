@@ -166,10 +166,10 @@ class TestUnuCharger(unittest.TestCase):
                 self.assertEqual(eStatus, uc.evaluate(), f"Failed on input {i}")
             assert(time_machine.time() - uc.startTime > 100, "start time not set correctly")
 
-
     @mock.patch('unuCharger.FritzConnection')
-    def test_UC_140(self, fc):
-        """ Check what happes if frity uses occasionally 140mw
+    def test_UC_withWait5(self, fc):
+        """ Check that WAITING is working and loading starts in starting period
+            Check for problems with spurios 140 mW usage
         """
         setFile = "testSettings.json"
         if not path.exists(setFile):
@@ -180,8 +180,53 @@ class TestUnuCharger(unittest.TestCase):
 
         uc = createCharger(fc, settings["Charger"][0])
 
-        powerSeq = [ 0, 0, 0, 140, 0, 0, 140, # one more zero inserted because switsching to WAITING consumes one value
-                    140, 140, 140,140, 140, 140,140, 140, 140,140, 140, 140, 140, 140, 140,140, 140, 140,140, 140, 140,140, 140, 140,
+        powerSeq = [140, 140, 140, 140, 140, 140, 317000, 140, 140, 140]
+        expectedStatus = [unuCharger.Charger.NOT_CHARGING] * 6 + [unuCharger.UnuCharger.WAITING] * 3
+        mockgetCont = MagicMock(side_effect=powerSeq)
+        uc._execGetContent = mockgetCont
+
+        # check that waiting status is reached
+        with time_machine.travel(datetime.strptime("01/01/2025 9:00", "%m/%d/%Y %H:%M").astimezone()):
+            for i, eStatus in enumerate(expectedStatus):
+                self.assertEqual(eStatus, uc.evaluate(), f"Failed on input {i}")
+            assert (time_machine.time() - uc.startTime > 100, "start time not set correctly")
+
+        powerSeq = [
+            316350, 316350, 316350, 316350, 317000, 317000, 317000, 317000, 316710, 316710,
+            316710, 316710, 315780, 315780, 315780, 315780, 316070, 316070, 316070, 315990,
+            315990, 305120, 305120, 294610, 294610, 0, 0]
+        expectedStatus = [unuCharger.Charger.CHARGING] * 24
+        expectedStatus.append(unuCharger.Charger.CHARGED)
+        expectedStatus.append(unuCharger.Charger.NOT_CHARGING)
+
+        mockgetCont = MagicMock(side_effect=powerSeq)
+        uc._execGetContent = mockgetCont
+
+        # now move us into the start loading time period
+        # check that we start charging
+        with time_machine.travel(datetime.strptime("01/01/2025 10:00", "%m/%d/%Y %H:%M").astimezone()):
+            for i, eStatus in enumerate(expectedStatus):
+                self.assertEqual(eStatus, uc.evaluate(), f"Failed on input {i}")
+
+                dt = time_machine.time() - uc.startTime
+                assert (dt > 3600 and dt < 36200, "start time not set correctly 2")
+
+
+    @mock.patch('unuCharger.FritzConnection')
+    def test_UC_140(self, fc):
+        """ Check what happes if fritz uses occasionally 140mw
+        """
+        setFile = "testSettings.json"
+        if not path.exists(setFile):
+            setFile = "test/" + setFile
+
+        with open(setFile) as sFile:
+            settings = json.load(sFile)
+
+        uc = createCharger(fc, settings["Charger"][0])
+
+        powerSeq = [ 0, 0, 0, 140, 0, 0, 140, # one more zero inserted because switching to WAITING consumes one value
+                    140, 140, 140,140, 140, 140,140, 140, 140,140, 140, 140, 140, 140, 140,140, 140, 140, 140, 140, 140,140, 140, 140,
                     0, 0 ]
         expectedStatus = [unuCharger.Charger.NOT_CHARGING] * len(powerSeq)
         mockgetCont = MagicMock(side_effect=powerSeq)
