@@ -170,7 +170,7 @@ class AutoCharger(AbstractCharger):
         pMedian = statistics.median(self.reads)
         for c in self.chargers:
             if pMedian > c.startPowerMW:
-                warn(f"{datetime.now().time().strftime("%d.%m.%Y %H:%M")} Start Loading {c.name}")
+                warn(f"{datetime.now().time().strftime('%d.%m.%Y %H:%M')} Start Loading {c.name}")
                 return c
 
         # Current Power usage is smaller than smallest charger
