@@ -117,9 +117,10 @@ class Charger(AbstractCharger):
 
 class AutoCharger(AbstractCharger):
     """
-    Detect which of the chargers to use based on the "StartPowerW" propery of the
-    Charger. Compare the power used at the start of the chargng cycle and use
-    The charger with the highest Power that iss below StartPowerW.
+    Detect which of the chargers to use based on the "StartPowerW" property of the
+    Charger. Compare the power used at the start of the charging cycle and use
+    The charger with the highest Power that is below StartPowerW.
+    This is done on the median of the last statsPoolSize power reads.
 
     """
     def __init__(self, chargers:List[Charger], statsPoolSize:int = 3):
@@ -157,7 +158,7 @@ class AutoCharger(AbstractCharger):
 
     def detectCharger(self):
         # filter out low values from disconnected time to compute average correctly
-        self.reads = list(filter(lambda v: v > 10, self.reads))
+        self.reads = list(filter(lambda v: v > 170, self.reads))
         if len(self.reads) >= self.statsPoolSize:
             self.reads.pop(0)
         power = self._execGetContent("getswitchpower")
@@ -169,7 +170,7 @@ class AutoCharger(AbstractCharger):
         pMedian = statistics.median(self.reads)
         for c in self.chargers:
             if pMedian > c.startPowerMW:
-                warn(f"Start Loading {c.name}")
+                warn(f"{datetime.now().time().strftime("%d.%m.%Y %H:%M")} Start Loading {c.name}")
                 return c
 
         # Current Power usage is smaller than smallest charger
