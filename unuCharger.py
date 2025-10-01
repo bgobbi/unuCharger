@@ -69,7 +69,7 @@ class Charger(AbstractCharger):
 
         warn(f"Batterie monitor created for {name} triggering at {triggerPowerMW/1000:.2f}")
 
-    def evaluate(self):
+    def evaluate(self) -> int:
         if len(self.reads) >= self.statsPoolSize and len(self.reads) > 0:
             self.reads.pop(0)
         power = self._execGetContent("getswitchpower")
@@ -123,7 +123,7 @@ class AutoCharger(AbstractCharger):
     This is done on the median of the last statsPoolSize power reads.
 
     """
-    def __init__(self, chargers:List[Charger], statsPoolSize:int = 3):
+    def __init__(self, chargers:List[Charger], statsPoolSize:int = 3, debug=False):
         AIN = chargers[0].AIN
         fritzCon = chargers[0].fritzCon
         self.name = "AutoCharger"
@@ -139,7 +139,16 @@ class AutoCharger(AbstractCharger):
         self.statsPoolSize = statsPoolSize
         self.reads: List[int] = []
 
-    def evaluate(self):
+        self.debugFile = None
+        if debug:
+            lf =  f"AutoCharger.debug.txt"
+            isOldFile =  os.path.exists(lf)
+            self.debugFile = open(lf,"at", buffering=1)
+            if isOldFile and os.path.getsize(lf) > 50000:
+                self.debugFile.truncate(0)
+
+
+    def evaluate(self) -> int:
         if not self.currentCharger:
             self.currentCharger = self.detectCharger()
             if self.currentCharger:
@@ -147,21 +156,23 @@ class AutoCharger(AbstractCharger):
             else:
                 return Charger.NOT_CHARGING
 
-        elif self.currentCharger:
-            ret = self.currentCharger.evaluate()
-            if ret == Charger.CHARGED or ret == Charger.NOT_CHARGING:
-                warn(f"Finished Loading {self.currentCharger.name}")
-                self.currentCharger = None
-                self.reads = []
+        ret = self.currentCharger.evaluate()
+        if ret == Charger.CHARGED or ret == Charger.NOT_CHARGING:
+            warn(f"Finished Loading {self.currentCharger.name}")
+            self.currentCharger = None
+            self.reads = []
 
-            return ret
+        return ret
 
-    def detectCharger(self):
+    def detectCharger(self) -> Charger | None:
         # filter out low values from disconnected time to compute average correctly
         self.reads = list(filter(lambda v: v > 170, self.reads))
         if len(self.reads) >= self.statsPoolSize:
             self.reads.pop(0)
         power = self._execGetContent("getswitchpower")
+        if self.debugFile:
+            print(f"{datetime.now().strftime('%d.%m.%Y %H:%M')}\t{power}\t{self.currentCharger}",
+                  file=self.debugFile)
         self.reads.append(power)
 
         if len(self.reads) < self.statsPoolSize:
@@ -174,6 +185,7 @@ class AutoCharger(AbstractCharger):
                 return c
 
         # Current Power usage is smaller than smallest charger
+        # but still > 170 or we would have len(self.reads) < self.statsPoolSize
         # Let's switch off everything
         self.fritzCon.call_http("setswitchoff", self.AIN)
         return None
@@ -192,7 +204,7 @@ class UnuCharger(Charger):
         super().__init__(name, AIN, fritzCon, triggerPowerDiffMW, statsPoolSize, startPowerMW, log, debug)
         self.startTimes = startTimes
 
-    def evaluate(self):
+    def evaluate(self) -> int:
 
         power = self._execGetContent("getswitchpower")
 
@@ -319,12 +331,13 @@ def createCharger(fc:FritzConnection, json:Dict[str,Any])->Charger:
 def createAutoCharger(fc:FritzConnection, json:Dict[str,Any]):
     AIN = json["AIN"]
     statsPoolSize =  json["statsPoolSize"]
+    debug = json.get("debug", False)
     chrgrs = []
     for c in json["Charger"]:
         c["AIN"] = AIN
         chrgrs.append(createCharger(fc, c))
 
-    return AutoCharger(chrgrs, statsPoolSize)
+    return AutoCharger(chrgrs, statsPoolSize, debug)
 
 
 class ChargerLoop():
@@ -348,7 +361,7 @@ class ChargerLoop():
 
     def loop(self):
         """
-            Loop over known chargers and evalute their state then repeat
+            Loop over known chargers and evaluate their state then repeat
         """
         while True:
             for bl in self.batMonitors:
