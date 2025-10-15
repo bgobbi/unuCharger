@@ -31,7 +31,7 @@ class TestUnuCharger(unittest.TestCase):
         # overwrite start times
         settings["Charger"][0]["startTimes"] = startTimes
 
-        uc = createCharger(fc, settings["Charger"][0])
+        uc = createCharger(fc, settings["frequencyS"], settings["Charger"][0])
 
         powerSeq = [
             316350, 316350, 316350, 316350, 317000, 317000, 317000, 317000, 316710, 316710,
@@ -72,7 +72,7 @@ class TestUnuCharger(unittest.TestCase):
         with open(setFile) as sFile:
             settings = json.load(sFile)
 
-        uc = createCharger(fc, settings["Charger"][0])
+        uc = createCharger(fc, settings["frequencyS"], settings["Charger"][0])
 
         powerSeq = [ 0, 0, 0, 317000, 0, 0, 0, 0 ]
         expectedStatus = [unuCharger.Charger.NOT_CHARGING] * 3 + [unuCharger.UnuCharger.WAITING] * 4
@@ -116,7 +116,7 @@ class TestUnuCharger(unittest.TestCase):
         with open(setFile) as sFile:
             settings = json.load(sFile)
 
-        uc = createCharger(fc, settings["Charger"][0])
+        uc = createCharger(fc, settings["frequencyS"], settings["Charger"][0])
 
         powerSeq = [ 0, 0, 0, 317000, 0, 0, 317001, # one more zero inserted because switsching to WAITING consumes one value
                     316350, 316350, 316350, 316350, 317000, 317000, 317000, 317000, 316710, 316710,
@@ -147,7 +147,7 @@ class TestUnuCharger(unittest.TestCase):
         with open(setFile) as sFile:
             settings = json.load(sFile)
 
-        uc = createCharger(fc, settings["Charger"][0])
+        uc = createCharger(fc, settings["frequencyS"], settings["Charger"][0])
 
         powerSeq = [ 0, 0, 0, 240, 0, 0, 317001, # one more zero inserted because switching to WAITING consumes one value
                     316350, 316350, 316350, 316350, 317000, 317000, 317000, 317000, 316710, 316710,
@@ -178,7 +178,7 @@ class TestUnuCharger(unittest.TestCase):
         with open(setFile) as sFile:
             settings = json.load(sFile)
 
-        uc = createCharger(fc, settings["Charger"][0])
+        uc = createCharger(fc, settings["frequencyS"], settings["Charger"][0])
 
         powerSeq = [140, 140, 140, 140, 140, 140, 317000, 140, 140, 140]
         expectedStatus = [unuCharger.Charger.NOT_CHARGING] * 6 + [unuCharger.UnuCharger.WAITING] * 3
@@ -223,7 +223,7 @@ class TestUnuCharger(unittest.TestCase):
         with open(setFile) as sFile:
             settings = json.load(sFile)
 
-        uc = createCharger(fc, settings["Charger"][0])
+        uc = createCharger(fc, settings["frequencyS"], settings["Charger"][0])
 
         powerSeq = [ 0, 0, 0, 140, 0, 0, 140, # one more zero inserted because switching to WAITING consumes one value
                     140, 140, 140,140, 140, 140,140, 140, 140,140, 140, 140, 140, 140, 140,140, 140, 140, 140, 140, 140,140, 140, 140,

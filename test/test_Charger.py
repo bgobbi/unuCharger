@@ -5,16 +5,16 @@ import unittest
 import mock
 from mock.mock import MagicMock
 
-from unuCharger import Charger
+from unuCharger import ThresholdCharger
 
 
 class TestCharger(unittest.TestCase):
 
     @mock.patch('unuCharger.FritzConnection')
     def testCharger(self, fc):
-        chrg = Charger("test", 'AIN', fc, 12000, 5, 15000, False)
+        chrg = ThresholdCharger("test", 'AIN', fc, 12000, 5, 15000, False)
         mockgetCont = MagicMock(side_effect=[0,25030, 25030, 25030, 25030,25030,0,0,0,0,0])
-        Charger._execGetContent = mockgetCont
+        ThresholdCharger._execGetContent = mockgetCont
         self.assertEqual(0, chrg.evaluate())
         self.assertEqual(1, chrg.evaluate())
         self.assertEqual(1, chrg.evaluate())

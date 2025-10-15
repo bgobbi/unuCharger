@@ -20,7 +20,7 @@ class TestAutoLoader(unittest.TestCase):
             settings = json.load(sFile)
 
 
-        self.ACharger = createAutoCharger(fc, settings['Charger'][1])
+        self.ACharger = createAutoCharger(fc, settings["frequencyS"], settings['Charger'][1])
 
 
     def testAutoLoader(self):

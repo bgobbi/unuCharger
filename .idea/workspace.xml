@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="140mW readings do not cause WAITING state">
+    <list default="true" id="5946686c-4e86-4d4a-b0e7-2265e68df62e" name="Changes" comment="added debugFile to AutoCharger">
       <change afterPath="$PROJECT_DIR$/UnuChargerWeb.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/testSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/test/testSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test_AutoCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_AutoCharger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test_Charger.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_Charger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/test_UnuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_UnuCharger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/unuCharger.py" beforeDir="false" afterPath="$PROJECT_DIR$/unuCharger.py" afterDir="false" />
     </list>
@@ -62,14 +66,14 @@
     "Python tests.Python tests in testUnuCharger.py.executor": "Run",
     "Python tests.Python tests in test_AutoCharger.py.executor": "Run",
     "Python tests.Python tests in test_Charger.py.executor": "Run",
-    "Python tests.Python tests in test_UnuCharger.py.executor": "Run",
+    "Python tests.Python tests in test_UnuCharger.py.executor": "Debug",
     "Python tests.pytest for test_UnuCharger.TestUnuCharger.test_UC.executor": "Debug",
     "Python tests.pytest for test_UnuCharger.TestUnuCharger.test_UC_140.executor": "Run",
     "Python tests.pytest for test_UnuCharger.TestUnuCharger.test_UC_withWait2.executor": "Debug",
     "Python.UnuChargerWeb.executor": "Run",
     "Python.app.executor": "Run",
     "Python.flaskHello.executor": "Run",
-    "Python.unuCharger.executor": "Run",
+    "Python.unuCharger.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -88,6 +92,28 @@
     </key>
   </component>
   <component name="RunManager" selected="Python tests.Python tests in test">
+    <configuration name="unuCharger" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="unuCharger" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/unuCharger.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Python tests for test_UnuCharger.TestUnuCharger.test_UC_withWait5" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="unuCharger" />
       <option name="ENV_FILES" value="" />
@@ -165,23 +191,6 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_UnuCharger.TestUnuCharger.test_UC" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="unuCharger" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="$PROJECT_DIR$/../../../../Programs/miniforge-pypy3/envs/large/python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_UnuCharger.TestUnuCharger.test_UC&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <configuration name="pytest for test_UnuCharger.TestUnuCharger.test_UC_withWait2" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="unuCharger" />
       <option name="ENV_FILES" value="" />
@@ -202,10 +211,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python tests.Python tests in test" />
-        <item itemvalue="Python tests.Python tests for test_UnuCharger.TestUnuCharger.test_UC_withWait5" />
         <item itemvalue="Python tests.Python tests in test_UnuCharger.py" />
+        <item itemvalue="Python.unuCharger" />
+        <item itemvalue="Python tests.Python tests for test_UnuCharger.TestUnuCharger.test_UC_withWait5" />
         <item itemvalue="Python tests.pytest for test_UnuCharger.TestUnuCharger.test_UC_withWait2" />
-        <item itemvalue="Python tests.pytest for test_UnuCharger.TestUnuCharger.test_UC" />
       </list>
     </recent_temporary>
   </component>
@@ -449,7 +458,47 @@
       <option name="project" value="LOCAL" />
       <updated>1752946621703</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="140mW readings do not cause WAITING state">
+      <option name="closed" value="true" />
+      <created>1753537734724</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1753537734724</updated>
+    </task>
+    <task id="LOCAL-00030" summary="170mW readings do not cause WAITING state">
+      <option name="closed" value="true" />
+      <created>1758700849017</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1758700849017</updated>
+    </task>
+    <task id="LOCAL-00031" summary="170mW readings do not cause WAITING state">
+      <option name="closed" value="true" />
+      <created>1758700951313</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1758700951313</updated>
+    </task>
+    <task id="LOCAL-00032" summary="170mW readings do not cause WAITING state">
+      <option name="closed" value="true" />
+      <created>1758701834391</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1758701834391</updated>
+    </task>
+    <task id="LOCAL-00033" summary="added debugFile to AutoCharger">
+      <option name="closed" value="true" />
+      <created>1759307896013</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1759307896013</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -543,7 +592,9 @@
     <MESSAGE value="Added debug option to report all interaction with the power switch" />
     <MESSAGE value="Increased threshold for no action from 10 to 170mW since it seems the plug occasionally will report 140mW" />
     <MESSAGE value="140mW readings do not cause WAITING state" />
-    <option name="LAST_COMMIT_MESSAGE" value="140mW readings do not cause WAITING state" />
+    <MESSAGE value="170mW readings do not cause WAITING state" />
+    <MESSAGE value="added debugFile to AutoCharger" />
+    <option name="LAST_COMMIT_MESSAGE" value="added debugFile to AutoCharger" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -559,20 +610,9 @@
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <condition expression="i==13" language="Python" />
-          <url>file://$PROJECT_DIR$/test/test_UnuCharger.py</url>
-          <line>237</line>
-          <option name="timeStamp" value="34" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/test_UnuCharger.py</url>
-          <line>84</line>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/test_UnuCharger.py</url>
-          <line>193</line>
-          <option name="timeStamp" value="39" />
+          <url>file://$PROJECT_DIR$/unuCharger.py</url>
+          <line>276</line>
+          <option name="timeStamp" value="58" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

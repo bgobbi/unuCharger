@@ -6,10 +6,13 @@ import time
 import traceback
 from datetime import datetime
 
+import numpy
 from fritzconnection import FritzConnection
 from typing import Any, List, Dict
 import statistics
 import json as jsonLib
+import numpy as np
+from scipy.stats import linregress
 
 
 def warn(strg:str):
@@ -37,14 +40,12 @@ class AbstractCharger:
 
         return reti
 
-
 class Charger(AbstractCharger):
 
-    def __init__(self, name:str, AIN:str, fritzCon:Any, triggerPowerMW:int, statsPoolSize:int = 3,
+    def __init__(self, name:str, AIN:str, fritzCon:Any, statsPoolSize:int = 3,
                        startPowerMW=0, log=False, debug=False):
         super().__init__(AIN, fritzCon)
         self.name = name
-        self.triggerPowerMW = triggerPowerMW
         self.statsPoolSize = statsPoolSize
         self.reads:List[int] = []
         self.startPowerMW = startPowerMW   # only needed for AutoChargers
@@ -66,8 +67,15 @@ class Charger(AbstractCharger):
             if isOldFile and os.path.getsize(lf) > 50000:
                 self.debugFile.truncate(0)
 
+class ThresholdCharger(Charger):
+
+    def __init__(self, name:str, AIN:str, fritzCon:Any, triggerPowerMW:int, statsPoolSize:int = 3,
+                       startPowerMW=0, log=False, debug=False):
+        super().__init__(name, AIN, fritzCon, statsPoolSize, startPowerMW, log, debug)
+        self.triggerPowerMW = triggerPowerMW
 
         warn(f"Batterie monitor created for {name} triggering at {triggerPowerMW/1000:.2f}")
+
 
     def evaluate(self) -> int:
         if len(self.reads) >= self.statsPoolSize and len(self.reads) > 0:
@@ -199,10 +207,15 @@ class UnuCharger(Charger):
 
     WAITING = 2
 
-    def __init__(self, name:str, AIN:str, fritzCon:Any, triggerPowerDiffMW:int, statsPoolSize:int = 3,
+    def __init__(self, name:str, AIN:str, fritzCon:Any, frequencyS:int, triggerMaxSlope:float, triggerMinR2:float, statsPoolSize:int = 3,
                        startPowerMW=260, startTimes:List[Dict[str,datetime]] = [],log=False, debug=False):
-        super().__init__(name, AIN, fritzCon, triggerPowerDiffMW, statsPoolSize, startPowerMW, log, debug)
-        self.startTimes = startTimes
+        super().__init__(name, AIN, fritzCon, statsPoolSize, startPowerMW, log, debug)
+        self.startTimes      = startTimes
+        self.triggerMaxSlope = triggerMaxSlope
+        self.triggerMinR2    = triggerMinR2
+        self.frequencyS      = frequencyS
+
+        warn(f"Batterie monitor created for {name} triggering at Slope < {triggerMaxSlope} and R2 > {triggerMinR2}")
 
     def evaluate(self) -> int:
 
@@ -252,20 +265,27 @@ class UnuCharger(Charger):
         if len(self.reads) < self.statsPoolSize:
             return self.status
 
-        # switch off if power threshold is reached
+        # switch off if slope is negative enough and R" is high enough
+        x = np.arange(0, len(self.reads) * self.frequencyS, self.frequencyS )
+        y = np.array(self.reads)
+        lin = linregress(x, y)
+        r2 = lin.rvalue * lin.rvalue
         pMax = max(self.reads)
-        lowest30 = statistics.quantiles(self.reads, n=10)[2]
-        if (pMax - lowest30 > self.triggerPowerMW   # max power in pool has dropped by triggerPower
-           or pMax < 10000):                        # this is an accidental on switch by user
+        if self.debugFile:
+            print(f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\tslope: {lin.slope}\tr2: {r2}\t{power}",
+                file=self.debugFile)
+        if lin.slope < self.triggerMaxSlope and  r2 > self.triggerMinR2 \
+           or pMax < 10000:
             self._execGetContent("setswitchoff")
             if self.debugFile:
                 print(
                     f"Switched OFF: {self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}\t{self.status}",
                     file=self.debugFile)
-            print(f"Charged: {self.name}\t{datetime.now().time().strftime('%H:%M')}\t{self.reads}",file=self.logFile)
+            print(f"Charged: {self.name}\t{datetime.now().time().strftime('%H:%M')}\tslope: {lin.slope}\tr2: {r2}\t{self.reads}",file=self.logFile)
             self.reads = []
 
             self.status = self.CHARGED
+
         return self.status
 
     def inLoadTimeWindow(self):
@@ -308,7 +328,7 @@ class UnuCharger(Charger):
             return self.WAITING
 
 
-def createCharger(fc:FritzConnection, json:Dict[str,Any])->Charger:
+def createCharger(fc:FritzConnection, frequencyS:int, json:Dict[str,Any])->Charger:
     AIN = json["AIN"]
     name = json["name"]
     statsPoolSize = json["statsPoolSize"]
@@ -317,25 +337,26 @@ def createCharger(fc:FritzConnection, json:Dict[str,Any])->Charger:
     debug = json.get("debug",False)
 
     if json.get("type", None) == "UNU":
-        triggerPowerDiffMW = int(json["triggerPowerDiffW"] * 1000)
+        triggerMaxSlope = float(json["triggerMaxSlope"])
+        triggerMinR2 = float(json["triggerMinR2"])
         startTimes:List[Dict[str:Any]] = json.get("startTimes", [])
         for p in startTimes:
             p["start"] = datetime.strptime(p["start"],"%H:%M").time()
             p["end"] = datetime.strptime(p["end"], "%H:%M").time()
-        return UnuCharger(name, AIN, fc, triggerPowerDiffMW, statsPoolSize, startPower, startTimes, log, debug)
+        return UnuCharger(name, AIN, fc, frequencyS, triggerMaxSlope, triggerMinR2, statsPoolSize, startPower, startTimes, log, debug)
     else:
         triggerPowerMW = int(json["triggerPowerW"] * 1000)
-        return Charger(name, AIN, fc, triggerPowerMW, statsPoolSize, startPower, log, debug)
+        return ThresholdCharger(name, AIN, fc, triggerPowerMW, statsPoolSize, startPower, log, debug)
 
 
-def createAutoCharger(fc:FritzConnection, json:Dict[str,Any]):
+def createAutoCharger(fc:FritzConnection, frequencyS:int, json:Dict[str,Any]):
     AIN = json["AIN"]
     statsPoolSize =  json["statsPoolSize"]
     debug = json.get("debug", False)
     chrgrs = []
     for c in json["Charger"]:
         c["AIN"] = AIN
-        chrgrs.append(createCharger(fc, c))
+        chrgrs.append(createCharger(fc, frequencyS, c))
 
     return AutoCharger(chrgrs, statsPoolSize, debug)
 
@@ -354,9 +375,9 @@ class ChargerLoop():
         self.batMonitors: List[Any] = []
         for json in self.settings["Charger"]:
             if "Charger" not in json:
-                self.batMonitors.append(createCharger(self.fc, json))
+                self.batMonitors.append(createCharger(self.fc, self.freq, json))
             else:
-                self.batMonitors.append(createAutoCharger(self.fc, json))
+                self.batMonitors.append(createAutoCharger(self.fc, self.freq, json))
 
 
     def loop(self):
