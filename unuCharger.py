@@ -32,6 +32,8 @@ class AbstractCharger:
     NOT_CHARGING = 0
     CHARGED = -1
 
+    MAX_DISCONNECTED_MW = 170 # Even when charger is off the fritz can occasionally pull 170 mW
+
     def __init__(self, AIN:str, fritzCon:Any):
         self.fritzCon = fritzCon
         self.AIN = AIN
@@ -99,13 +101,13 @@ class ThresholdCharger(Charger):
         if self.status != self.CHARGING:
             # remove values below 10 mW so that when new charging starts
             # the low values of disconnected charge do not average out new values
-            self.reads = list(filter(lambda v: v > 10, self.reads))
+            self.reads = list(filter(lambda v: v > self.MAX_DISCONNECTED_MW, self.reads))
         self.reads.append(power)
 
         pMedian = statistics.median(self.reads)
 
         if len(self.reads) < self.statsPoolSize:
-            if pMedian < 170:
+            if pMedian < self.MAX_DISCONNECTED_MW:
                 self.status = self.NOT_CHARGING
             else:
                 if not self.status == self.CHARGING:
@@ -182,7 +184,7 @@ class AutoCharger(AbstractCharger):
 
     def detectCharger(self) -> Charger | None:
         # filter out low values from disconnected time to compute average correctly
-        self.reads = list(filter(lambda v: v > 170, self.reads))
+        self.reads = list(filter(lambda v: v > self.MAX_DISCONNECTED_MW, self.reads))
         if len(self.reads) >= self.statsPoolSize:
             self.reads.pop(0)
         power = self._execGetContent("getswitchpower")
@@ -201,7 +203,7 @@ class AutoCharger(AbstractCharger):
                 return c
 
         # Current Power usage is smaller than smallest charger
-        # but still > 170 or we would have len(self.reads) < self.statsPoolSize
+        # but still > MAX_DISCONNECTED_MW or we would have len(self.reads) < self.statsPoolSize
         # Let's switch off everything
         self.fritzCon.call_http("setswitchoff", self.AIN)
         return None
@@ -245,12 +247,12 @@ class UnuCharger(Charger):
         if self.logFile and power > 50:
             print(f"{self.name}\t{datetime.now().time().strftime('%H:%M')}\t{time.time() - self.startTime:.0f}\t{power}",file=self.logFile)
 
-        self.reads = list(filter(lambda v: v > 150, self.reads))
+        self.reads = list(filter(lambda v: v > self.MAX_DISCONNECTED_MW, self.reads))
         self.reads.append(power)
 
         pMedian = statistics.median(self.reads)
 
-        if pMedian < 170:
+        if pMedian <= self.MAX_DISCONNECTED_MW:
             self.status = self.NOT_CHARGING
             return self.status
 
