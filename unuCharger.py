@@ -14,6 +14,14 @@ import json as jsonLib
 import numpy as np
 from scipy.stats import linregress
 
+import faulthandler
+import signal
+# This allows the current running threads to be dumped using:
+#          kill -s SIGUSR1 <pid>
+try:
+    faulthandler.register(signal.SIGUSR1.value)
+except:
+    pass   # not supported by current python kernel
 
 def warn(strg:str):
     print(strg, file=sys.stderr)
